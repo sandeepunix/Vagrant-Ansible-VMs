@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure(2) do |config|
+
+
+  # Kubernetes Master Server
+  config.vm.define "ansible" do |ansible|
+    ansible.vm.box = "ubuntu/xenial64"
+    ansible.vm.hostname = "ansible.example.com"
+    ansible.vm.network "private_network", ip: "172.42.43.100"
+    ansible.vm.provider "virtualbox" do |v|
+      v.name = "ansible"
+      v.memory = 2048
+      v.cpus = 1
+    end
+    ansible.vm.provision "shell", path: "script.sh"
+  end
+
+    config.vm.define "ansiblenode" do |ansiblenode|
+      ansiblenode.vm.box = "ubuntu/xenial64"
+      ansiblenode.vm.hostname = "ansiblenode.example.com"
+      ansiblenode.vm.network "private_network", ip: "172.42.43.10"
+      ansiblenode.vm.provider "virtualbox" do |v|
+        v.name = "ansibelnode"
+        v.memory = 1024
+        v.cpus = 1
+      end
+      ansiblenode.vm.provision "shell", path: "nodescript.sh"
+    end
+end
